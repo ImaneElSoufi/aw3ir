@@ -3,7 +3,6 @@
      border-collapse: collapse;
      border: 1px solid;
  }
-
  #myTable tr:nth-child(odd) {
      background-color: #a2a8d3;
  }
@@ -45,11 +44,12 @@
 
  .transform {
      max-width: 100px;
-
+     margin-left: 100px;
  }
 
  .transform:hover {
-     transform: scale(5);
+     transform: scale(3);
+     object-fit: cover;
  }
 
  a {
