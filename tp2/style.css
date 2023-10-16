@@ -49,7 +49,9 @@ input {
 form:invalid input[type="submit"] {
     background-color: gray;
 }
-
+input:invalid{
+    border-color: red;
+}
 input:invalid+.icon-ok {
     display: none;
 }
