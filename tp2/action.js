@@ -13,9 +13,11 @@ window.onload = () => { // https://developer.mozilla.org/fr/docs/Web/API/Window/
         if (element !== null) {
             element.textContent = elementValue;
         }
-        if (param[0] === "address") {
+        if (elementId === "address") {
+            const addressValue = elementValue;
             element.href = `https://www.google.com/maps/search/?api=1&query=${elementValue}`;
-        } else if (param[0] === "email") {
+        } else if (elementId === "email") {
+            const emailValue = elementValue;
             element.href = `mailto:${elementValue}?subject=Hello!&body=What's up?`;
         }
     }
