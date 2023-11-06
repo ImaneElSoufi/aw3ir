@@ -76,11 +76,12 @@ window.onload = function () {
         birthDate.textContent = `Vous êtes nés le ${formattedDate} et vous habitez:`;
 
         // Fetch Google Static Maps API image
-        //API key given not working
-        const apiKey = 'AIzaSyAkmvI9DazzG9p77IShsz_Di7-5Qn7zkcg'; 
+        const apiKey = 'AIzaSyAkmvI9DazzG9p77IShsz_Di7-5Qn7zkcg';
         const staticMapURL = `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(adresse)}&zoom=15&size=400x400&key=${apiKey}`;
         const googleMapsURL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(adresse)}`;
 
+        const addressLink = document.getElementById('addressLink');
+        addressLink.innerHTML = `<a href="${googleMapsURL}" target="_blank">${adresse}</a>`;
 
         staticMap.src = staticMapURL;
         googleMapsLink.href = googleMapsURL;
