@@ -34,6 +34,9 @@ var contactStore = (function () {
         reset: function () {
 
             localStorage.removeItem('contactList');
+            // Clear table rows in the DOM
+            const tableBody = document.querySelector("table tbody");
+            tableBody.innerHTML = "";
 
             return contactList;
         },

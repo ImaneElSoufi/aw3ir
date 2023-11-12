@@ -1,68 +1,60 @@
 window.onload = function () {
     console.log("DOM ready!");
-    function updateCharCount(id) {
-        const inputField = document.getElementById(id);
-        const charCountSpan = inputField.nextElementSibling;
-        const charCount = inputField.value.length;
-        charCountSpan.textContent = `${charCount} car.`;
-    }
+    displayContactList();
+    // Add character count and validation on keyup event
+    document.addEventListener("keyup", function () {
+        updateCharCount("inputNom", "count1");
+        updateCharCount("inputPrenom", "count2");
+        updateCharCount("inputDate", "count3");
+        updateCharCount("inputAdresse", "count4");
+        updateCharCount("inputEmail3", "count5");
 
-    const inputNom = document.getElementById('inputNom');
-    if (inputNom) {
-        inputNom.addEventListener('input', function () {
-            updateCharCount('inputNom');
-        });
-    }
+        // Validation process
+        var valid = true;
+        valid = validateField("inputNom", 5) && valid;
+        valid = validateField("inputPrenom", 5) && valid;
+        valid = validateField("inputDate", 5) && valid;
+        valid = validateField("inputAdresse", 5) && valid;
+        valid = validateField("inputEmail3", 5) && valid;
 
-    const inputEmail = document.getElementById('inputEmail3');
-    if (inputEmail) {
-        inputEmail.addEventListener('input', function () {
-            updateCharCount('inputEmail3');
-        });
-    }
-    const inputPrenom = document.getElementById('inputPrenom');
-    if (inputPrenom) {
-        inputPrenom.addEventListener('input', function () {
-            updateCharCount('inputPrenom');
-        });
-    }
+        return valid;
+    });
 
-    const inputAdresse = document.getElementById('inputAdresse');
-    if (inputAdresse) {
-        inputAdresse.addEventListener('input', function () {
-            updateCharCount('inputAdresse');
-        });
-    }
-    const inputDate = document.getElementById('inputDate');
-    if (inputDate) {
-        inputDate.addEventListener('input', function () {
-            updateCharCount('inputDate');
-        });
-    }
-
-    document.getElementById('myForm').addEventListener('submit', function (event) {
+    // Add submit event listener for form submission
+    document.getElementById("envoie").addEventListener("click", function (event) {
         event.preventDefault();
         if (validateForm()) {
-            // If the form is valid, add the contact to the contactStore
-            const nom = document.getElementById('inputNom').value;
-            const prenom = document.getElementById('inputPrenom').value;
-            const adresse = document.getElementById('inputAdresse').value;
-            const email = document.getElementById('inputEmail3').value;
-            const dateNaissance = document.getElementById('inputDate').value;
+            storeFormData();
 
-            // Call the method to add contact to the contactStore
-            contactStore.add(nom, prenom, dateNaissance, adresse, email);
-            document.getElementById('myForm').reset();
-            // getLocation();
 
         }
     });
-    document.getElementById('gpsButton').addEventListener('click', function () {
-        getLocation();
+    document.getElementById("Reset").addEventListener("click", function (event) {
+        event.preventDefault();
+        contactStore.reset();
+
     });
+    // Function to update character count
+    function updateCharCount(inputId, countId) {
+        var inputField = document.getElementById(inputId);
+        var charCountSpan = document.getElementById(countId);
+        var charCount = inputField.value.length;
+        charCountSpan.textContent = `${charCount} Car.`;
+    }
 
+    // Function to validate a field based on minimum length
+    function validateField(inputId, minLength) {
+        var inputField = document.getElementById(inputId);
+
+        if (inputField.value.length < minLength) {
+            inputField.style.borderColor = "#ff0000";
+            return false;
+        } else {
+            inputField.style.borderColor = "#48DE14";
+            return true;
+        }
+    }
     function validateForm() {
-
         // Récupérer les valeurs des champs
         const nom = document.getElementById('inputNom').value;
         const prenom = document.getElementById('inputPrenom').value;
@@ -98,6 +90,7 @@ window.onload = function () {
             alert("La date de naissance ne peut pas être dans le futur.");
             return false;
         }
+
         return true;
     }
 
@@ -106,43 +99,62 @@ window.onload = function () {
         return re.test(String(email).toLowerCase());
     }
 
-    function getLocation() {
-        var address = document.getElementById('inputAdresse').value;
 
-        // Google Maps Geocoding API to convert address to coordinates
-        var geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ 'address': address }, function (results, status) {
-            if (status === 'OK' && results.length > 0) {
-                var location = results[0].geometry.location;
-                var latlon = location.lat() + "," + location.lng();
+    // Function to store form data in localStorage
+    function storeFormData() {
+        var inputNom = document.getElementById("inputNom");
+        var inputPrenom = document.getElementById("inputPrenom");
+        var inputDate = document.getElementById("inputDate");
+        var inputAdresse = document.getElementById("inputAdresse");
+        var inputEmail = document.getElementById("inputEmail3");
 
-                var img_url = `https://maps.googleapis.com/maps/api/staticmap?center=${latlon}&zoom=14&size=400x300&key=AIzaSyAkmvI9DazzG9p77IShsz_Di7-5Qn7zkcg`;
+        if (
+            inputNom.value !== "" &&
+            inputPrenom.value !== "" &&
+            inputDate.value !== "" &&
+            inputAdresse.value !== "" &&
+            inputEmail.value !== ""
+        ) {
+            contactStore.add(
+                inputNom.value,
+                inputPrenom.value,
+                inputDate.value,
+                inputAdresse.value,
+                inputEmail.value
+            );
 
-                // Display the map image under the address
-                document.querySelector("#map").innerHTML = `<img src='${img_url}'>`;
+            // Display success message
+            document.getElementById("success").classList.add("alert", "alert-success");
+            document.getElementById("success").textContent = "Contact ajouté avec succès.";
 
-            } else {
-                console.error('Geocoding failed:', status);
-            }
-        });
+            var tableRow = `<tr><td>${localStorage.getItem("inputNom")}</td><td>${localStorage.getItem("inputPrenom")}</td><td>${localStorage.getItem("inputDate")}</td><td><a href="https://maps.google.com/maps?q=${localStorage.getItem("inputAdresse")}">${localStorage.getItem("inputAdresse")}</a></td><td><a href="mailto:${localStorage.getItem("inputEmail3")}">${localStorage.getItem("inputEmail3")}</a></td></tr>`;
+
+            document.querySelector("table tbody").innerHTML += tableRow;
+            // Clear input fields
+            inputNom.value = "";
+            inputPrenom.value = "";
+            inputDate.value = "";
+            inputAdresse.value = "";
+            inputEmail.value = "";
+
+        }
     }
+    function displayContactList() {
+        const contactListString = localStorage.getItem('contactList'); // ici on va récupérer la liste en forme de chaine de caractère (string)
+        const contactList = contactListString ? JSON.parse(contactListString) : [];
 
-
-    function showPosition(position) {
-        var latlon = position.coords.latitude + "," + position.coords.longitude;
-        var img_url = `https://maps.googleapis.com/maps/api/staticmap?center=${latlon}&zoom=14&size=400x300&key=AIzaSyAkmvI9DazzG9p77IShsz_Di7-5Qn7zkcg`;
-
-        document.querySelector("#map").innerHTML = `<img src='${img_url}'>`;
-
-        //  update the addressLink 
-        const addressLink = document.getElementById('addressLink');
-        addressLink.innerHTML = `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(latlon)}" target="_blank">${latlon}`;
-    }
-
-    function showError(error) {
-        console.error("Geolocation error:", error.message);
-
+        for (const contact of contactList) {
+            document.querySelector("table tbody").innerHTML +=
+                `<tr>
+                    <td>${contact.inputNom}</td>
+                    <td>${contact.inputPrenom}</td>
+                    <td>${contact.inputDate}</td>
+                    <td><a href="https://maps.google.com/maps?q=${contact.inputAdresse}">${contact.inputAdresse}</a></td>
+                    <td><a href="mailto:${contact.inputEmail}">${contact.inputEmail}</a></td>
+                </tr>`;
+        }
     }
 
 
 };
+
