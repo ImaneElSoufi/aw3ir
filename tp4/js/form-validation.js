@@ -25,6 +25,10 @@ window.onload = function () {
         event.preventDefault();
         if (validateForm()) {
             storeFormData();
+            // Explicitly set an empty array in localStorage
+            localStorage.setItem('contactList', JSON.stringify([]));
+
+            displayContactList();
 
 
         }
@@ -32,6 +36,7 @@ window.onload = function () {
     document.getElementById("Reset").addEventListener("click", function (event) {
         event.preventDefault();
         contactStore.reset();
+        displayContactList();
 
     });
     // Function to update character count
@@ -127,7 +132,13 @@ window.onload = function () {
             document.getElementById("success").classList.add("alert", "alert-success");
             document.getElementById("success").textContent = "Contact ajouté avec succès.";
 
-            var tableRow = `<tr><td>${localStorage.getItem("inputNom")}</td><td>${localStorage.getItem("inputPrenom")}</td><td>${localStorage.getItem("inputDate")}</td><td><a href="https://maps.google.com/maps?q=${localStorage.getItem("inputAdresse")}">${localStorage.getItem("inputAdresse")}</a></td><td><a href="mailto:${localStorage.getItem("inputEmail3")}">${localStorage.getItem("inputEmail3")}</a></td></tr>`;
+            var tableRow = `<tr>
+            <td>${inputNom.value}</td>
+            <td>${inputPrenom.value}</td>
+            <td>${inputDate.value}</td>
+            <td><a href="https://maps.google.com/maps?q=${inputAdresse.value}">${inputAdresse.value}</a></td>
+            <td><a href="mailto:${inputEmail.value}">${inputEmail.value}</a></td>
+        </tr>`;
 
             document.querySelector("table tbody").innerHTML += tableRow;
             // Clear input fields
@@ -140,20 +151,41 @@ window.onload = function () {
         }
     }
     function displayContactList() {
-        const contactListString = localStorage.getItem('contactList'); // ici on va récupérer la liste en forme de chaine de caractère (string)
-        const contactList = contactListString ? JSON.parse(contactListString) : [];
+        const contactTableBody = document.querySelector("table tbody");
 
-        for (const contact of contactList) {
-            document.querySelector("table tbody").innerHTML +=
-                `<tr>
-                    <td>${contact.inputNom}</td>
-                    <td>${contact.inputPrenom}</td>
-                    <td>${contact.inputDate}</td>
-                    <td><a href="https://maps.google.com/maps?q=${contact.inputAdresse}">${contact.inputAdresse}</a></td>
-                    <td><a href="mailto:${contact.inputEmail}">${contact.inputEmail}</a></td>
-                </tr>`;
-        }
+        // Retrieve existing HTML content of the table body
+        const existingRows = contactTableBody.innerHTML;
+
+        // Clear existing rows
+        contactTableBody.innerHTML = existingRows;
+
+        // Retrieve contactList from local storage
+        getContactListFromLocalStorage(function (contactList) {
+            for (const contact of contactList) {
+                contactTableBody.innerHTML +=
+                    `<tr>
+                        <td>${contact.inputNom}</td>
+                        <td>${contact.inputPrenom}</td>
+                        <td>${contact.inputDate}</td>
+                        <td><a href="https://maps.google.com/maps?q=${contact.inputAdresse}">${contact.inputAdresse}</a></td>
+                        <td><a href="mailto:${contact.inputEmail}">${contact.inputEmail}</a></td>
+                    </tr>`;
+            }
+
+            // Update the contactListTitle with the number of contacts
+            const contactListTitle = document.getElementById('contactListTitle');
+            const rowCount = document.querySelectorAll("table tbody tr").length;
+            contactListTitle.textContent = `Liste des contacts (${rowCount})`;
+        });
     }
+
+    // Callback function to retrieve contactList from local storage
+    function getContactListFromLocalStorage(callback) {
+        const contactListString = localStorage.getItem('contactList');
+        const contactList = contactListString ? JSON.parse(contactListString) : [];
+        callback(contactList);
+    }
+
 
 
 };
