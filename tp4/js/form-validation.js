@@ -167,8 +167,8 @@ window.onload = function () {
                         <td>${contact.inputNom}</td>
                         <td>${contact.inputPrenom}</td>
                         <td>${contact.inputDate}</td>
-                        <td><a href="https://maps.google.com/maps?q=${contact.inputAdresse}">${contact.inputAdresse}</a></td>
-                        <td><a href="mailto:${contact.inputEmail}">${contact.inputEmail}</a></td>
+                        <td ><a href="https://maps.google.com/maps?q=${contact.inputAdresse}">${contact.inputAdresse}</a></td>
+                        <td ><a href="mailto:${contact.inputEmail}">${contact.inputEmail}</a></td>
                     </tr>`;
             }
 
