@@ -113,26 +113,19 @@ window.onload = function () {
         var inputAdresse = document.getElementById("inputAdresse");
         var inputEmail = document.getElementById("inputEmail3");
 
-        if (
-            inputNom.value !== "" &&
-            inputPrenom.value !== "" &&
-            inputDate.value !== "" &&
-            inputAdresse.value !== "" &&
-            inputEmail.value !== ""
-        ) {
-            contactStore.add(
-                inputNom.value,
-                inputPrenom.value,
-                inputDate.value,
-                inputAdresse.value,
-                inputEmail.value
-            );
+        contactStore.add(
+            inputNom.value,
+            inputPrenom.value,
+            inputDate.value,
+            inputAdresse.value,
+            inputEmail.value
+        );
 
-            // Display success message
-            document.getElementById("success").classList.add("alert", "alert-success");
-            document.getElementById("success").textContent = "Contact ajouté avec succès.";
+        // Display success message
+        document.getElementById("success").classList.add("alert", "alert-success");
+        document.getElementById("success").textContent = "Contact ajouté avec succès.";
 
-            var tableRow = `<tr>
+        var tableRow = `<tr>
             <td>${inputNom.value}</td>
             <td>${inputPrenom.value}</td>
             <td>${inputDate.value}</td>
@@ -140,15 +133,15 @@ window.onload = function () {
             <td><a href="mailto:${inputEmail.value}">${inputEmail.value}</a></td>
         </tr>`;
 
-            document.querySelector("table tbody").innerHTML += tableRow;
-            // Clear input fields
-            inputNom.value = "";
-            inputPrenom.value = "";
-            inputDate.value = "";
-            inputAdresse.value = "";
-            inputEmail.value = "";
+        document.querySelector("table tbody").innerHTML += tableRow;
+        // Clear input fields
+        inputNom.value = "";
+        inputPrenom.value = "";
+        inputDate.value = "";
+        inputAdresse.value = "";
+        inputEmail.value = "";
 
-        }
+
     }
     function displayContactList() {
         const contactTableBody = document.querySelector("table tbody");
