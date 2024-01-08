@@ -54,7 +54,6 @@ window.onload = function () {
                     this.formCityName = '';
 
                     console.log('formCityName:', this.formCityName);
-                    // A compléter dans la suite du TP  
                 }
             },
             isCityExist: function (_cityName) {
@@ -94,6 +93,8 @@ window.onload = function () {
                             app.message = null;
                         } else {
                             app.cityWeather = null;
+                            message = "City not available ! Please retry again or check the spelling.";
+                            alert(message);
                             app.message = 'Météo introuvable pour ' + _city.name
                                 + ' (' + json.message + ')';
                         }
