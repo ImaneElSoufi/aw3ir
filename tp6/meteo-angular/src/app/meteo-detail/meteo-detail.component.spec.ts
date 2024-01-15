@@ -8,9 +8,9 @@ describe('MeteoDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MeteoDetailComponent ]
+      declarations: [MeteoDetailComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

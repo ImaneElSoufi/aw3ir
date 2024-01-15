@@ -8,9 +8,9 @@ describe('MeteoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MeteoComponent ]
+      declarations: [MeteoComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -22,4 +22,5 @@ describe('MeteoComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });
