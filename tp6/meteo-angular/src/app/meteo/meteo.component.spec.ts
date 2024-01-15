@@ -8,10 +8,12 @@ describe('MeteoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MeteoComponent]
+      declarations: [ MeteoComponent ]
     })
     .compileComponents();
-    
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(MeteoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
